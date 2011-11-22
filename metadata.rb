@@ -7,6 +7,6 @@ version          "0.0.3"
 
 attribute "xymon/servers",
   :display_name => "Xymon Server ip addresses",
-  :description => "List of Xymon servers to send monitoing information to",
+  :description => "List of Xymon servers to send monitoring information to",
   :type => "array",
   :default => ""
