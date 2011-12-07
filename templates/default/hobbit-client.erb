@@ -18,4 +18,4 @@ HOBBITSERVERS="<%= node['xymon']['servers'].join(' ') %>"
 # Must match the name for this host in the Hobbit servers'
 # bb-hosts file.
 
-CLIENTHOSTNAME="<%= node["fqdn"] %>"
+CLIENTHOSTNAME="<%= node["hostname"] %>"
