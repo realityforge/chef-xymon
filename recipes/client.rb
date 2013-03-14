@@ -14,21 +14,21 @@
 # limitations under the License.
 #
 
-raise "Unexpected platform" unless node.platform == "ubuntu"
+raise 'Unexpected platform' unless node['platform'] == 'ubuntu'
 
-package "xymon-client" do
+package 'xymon-client' do
   action :install
 end
 
-service "hobbit-client" do
+service 'hobbit-client' do
   supports :restart => true, :reload => true, :status => true
   action [:enable, :start]
 end
 
-template "/etc/default/hobbit-client" do
-  source "hobbit-client.erb"
+template '/etc/default/hobbit-client' do
+  source 'hobbit-client.erb'
   owner 'hobbit'
   group 'hobbit'
-  mode "0644"
-  notifies :restart, "service[hobbit-client]"
+  mode '0644'
+  notifies :restart, 'service[hobbit-client]'
 end
