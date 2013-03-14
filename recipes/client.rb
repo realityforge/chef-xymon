@@ -30,5 +30,5 @@ template "/etc/default/hobbit-client" do
   owner 'hobbit'
   group 'hobbit'
   mode "0644"
-  notifies :restart, resources(:service => "hobbit-client")
+  notifies :restart, "service[hobbit-client]"
 end
