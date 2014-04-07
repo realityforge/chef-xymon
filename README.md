@@ -26,4 +26,3 @@ To use this cookbook, set the attributes above on the node via a role or the nod
     "xymon" => {
       "servers" => [ "127.0.0.1" ]
     }
-
