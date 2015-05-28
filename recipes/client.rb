@@ -39,6 +39,7 @@ cron "apt_update" do
 	&& [ ! -s /var/lib/apt/update_output ] \
 	&& date -u > /var/lib/apt/update_success
     }
+end
 
 template '/etc/default/hobbit-client' do
   source 'hobbit-client.erb'
