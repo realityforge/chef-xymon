@@ -38,7 +38,7 @@ cron "apt_update" do
     	apt-get update -qq > /var/lib/apt/update_output 2>&1 \ 
 	&& [ ! -s /var/lib/apt/update_output ] \
 	&& date -u > /var/lib/apt/update_success
-    }
+    }.join(' ')
 end
 
 template '/etc/default/hobbit-client' do
