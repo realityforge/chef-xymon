@@ -16,11 +16,12 @@
 
 raise 'Unexpected platform' unless node['platform'] == 'ubuntu' or node['platform'] == 'debian'
 
-service_name= 'xymon-client'
-service_name = 'hobbit-client' if node[:platform_family] =~ /ubuntu/i && node[:platform_version] < 14
+app_name= 'xymon'
+app_name = 'hobbit' if node[:platform_family] =~ /debian/i && node[:platform_version].to_i < 14
 
-user_name= 'xymon'
-user_name = 'hobbit' if node[:platform_family] =~ /ubuntu/i && node[:platform_version] < 14
+service_name= "#{app_name}-client"
+user_name = app_name
+group_name = app_name
 
 package 'xymon-client' do
   action :install
@@ -49,10 +50,10 @@ cron "apt_update" do
 #    }.join(' ')
 end
 
-template '/etc/default/hobbit-client' do
-  source 'hobbit-client.erb'
+template "/etc/default/#{service_name}" do
+  source "#{service_name}.erb"
   owner user_name
-  group user_name
+  group group_name
   mode '0644'
   notifies :restart, "service[#{service_name}]"
 end

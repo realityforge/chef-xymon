@@ -7,11 +7,10 @@ require 'spec_helper'
     it { should be_installed }
   end
 end
-puts os[:release].split('.')[0]
-puts os[:release]
 
-service_name= 'xymon-client'
-service_name = 'hobbit-client' if %w(debian ubuntu).include?(os[:family]) && os[:release].to_i < 14
+app_name= 'xymon'
+app_name = 'hobbit' if %w(debian ubuntu).include?(os[:family]) && os[:release].to_i < 14
+service_name= "#{app_name}-client"
 
 describe service(service_name) do
   it { should be_running }
@@ -22,9 +21,10 @@ describe cron do
   it { should have_entry('0 4 * * * apt-get update -qq > /var/lib/apt/update_output 2>&1 && [ ! -s /var/lib/apt/update_output ] && date -u > /var/lib/apt/update_success') }
 end
 
-describe file('/etc/default/hobbit-client') do
+
+describe file("/etc/default/#{service_name}") do
   it { should exist }
-  its(:content) { should match(/HOBBITSERVERS="server1\s+server2"/) }
+  its(:content) { should match(/SERVERS="server1\s+server2"/) }
 end
 
 
