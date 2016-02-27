@@ -16,6 +16,12 @@
 
 raise 'Unexpected platform' unless node['platform'] == 'ubuntu' or node['platform'] == 'debian'
 
+service_name= 'xymon-client'
+service_name = 'hobbit-client' if node[:platform_family] =~ /ubuntu/i && node[:platform_version] < 14
+
+user_name= 'xymon'
+user_name = 'hobbit' if node[:platform_family] =~ /ubuntu/i && node[:platform_version] < 14
+
 package 'xymon-client' do
   action :install
 end
@@ -24,7 +30,8 @@ package 'hobbit-plugins' do
     action :install
 end
 
-service 'hobbit-client' do
+  
+service service_name do
   supports :restart => true, :reload => true, :status => true
   action [:enable, :start]
 end
@@ -34,17 +41,18 @@ cron "apt_update" do
     minute '0'
     hour '4'
     user 'root'
-    command %w{
-    	apt-get update -qq > /var/lib/apt/update_output 2>&1 \ 
-	&& [ ! -s /var/lib/apt/update_output ] \
-	&& date -u > /var/lib/apt/update_success
-    }.join(' ')
+    command 'apt-get update -qq > /var/lib/apt/update_output 2>&1 && [ ! -s /var/lib/apt/update_output ] && date -u > /var/lib/apt/update_success'
+#    command %w{
+#    	apt-get update -qq > /var/lib/apt/update_output 2>&1 \ 
+#	&& [ ! -s /var/lib/apt/update_output ] \
+#	&& date -u > /var/lib/apt/update_success
+#    }.join(' ')
 end
 
 template '/etc/default/hobbit-client' do
   source 'hobbit-client.erb'
-  owner 'hobbit'
-  group 'hobbit'
+  owner user_name
+  group user_name
   mode '0644'
-  notifies :restart, 'service[hobbit-client]'
+  notifies :restart, "service[#{service_name}]"
 end
