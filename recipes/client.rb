@@ -13,47 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-raise 'Unexpected platform' unless node['platform'] == 'ubuntu' or node['platform'] == 'debian'
-
-app_name= 'xymon'
-app_name = 'hobbit' if node[:platform_family] =~ /debian/i && node[:platform_version].to_i < 14
-
-service_name= "#{app_name}-client"
-user_name = app_name
-group_name = app_name
-
-package 'xymon-client' do
-  action :install
+#if %w(ubuntu debian).inclue node['platform_family'] 
+case node['platform'] 
+when 'ubuntu'
+  include_recipe "xymon::ubuntu-client"
+when 'centos'
+  include_recipe "xymon::centos-client"
+else
+  raise 'Unexpected platform'
 end
 
-package 'hobbit-plugins' do
-    action :install
-end
-
-  
-service service_name do
-  supports :restart => true, :reload => true, :status => true
-  action [:enable, :start]
-end
-
-cron "apt_update" do
-    action :create
-    minute '0'
-    hour '4'
-    user 'root'
-    command 'apt-get update -qq > /var/lib/apt/update_output 2>&1 && [ ! -s /var/lib/apt/update_output ] && date -u > /var/lib/apt/update_success'
-#    command %w{
-#    	apt-get update -qq > /var/lib/apt/update_output 2>&1 \ 
-#	&& [ ! -s /var/lib/apt/update_output ] \
-#	&& date -u > /var/lib/apt/update_success
-#    }.join(' ')
-end
-
-template "/etc/default/#{service_name}" do
-  source "#{service_name}.erb"
-  owner user_name
-  group group_name
-  mode '0644'
-  notifies :restart, "service[#{service_name}]"
-end
