@@ -31,23 +31,9 @@ package 'hobbit-plugins' do
     action :install
 end
 
-  
 service service_name do
   supports :restart => true, :reload => true, :status => true
   action [:enable, :start]
-end
-
-cron "apt_update" do
-    action :create
-    minute '0'
-    hour '4'
-    user 'root'
-    command 'apt-get update -qq > /var/lib/apt/update_output 2>&1 && [ ! -s /var/lib/apt/update_output ] && date -u > /var/lib/apt/update_success'
-#    command %w{
-#    	apt-get update -qq > /var/lib/apt/update_output 2>&1 \ 
-#	&& [ ! -s /var/lib/apt/update_output ] \
-#	&& date -u > /var/lib/apt/update_success
-#    }.join(' ')
 end
 
 template "/etc/default/#{service_name}" do

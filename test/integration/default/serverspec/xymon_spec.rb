@@ -8,10 +8,6 @@ if %w(debian ubuntu).include? os[:family]
   describe package('hobbit-plugins') do
     it { should be_installed }
   end
-
-  describe cron do
-    it { should have_entry('0 4 * * * apt-get update -qq > /var/lib/apt/update_output 2>&1 && [ ! -s /var/lib/apt/update_output ] && date -u > /var/lib/apt/update_success') }
-  end
 end
 
 app_name= 'xymon'
