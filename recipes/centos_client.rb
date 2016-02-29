@@ -2,7 +2,7 @@ service_name = 'xymon-client'
 
 include_recipe 'yum-epel'
 
-major_version = node['platform_version'].split('.')[0] 
+major_version = node['platform_version'].split('.')[0]
 yum_repository 'xymon' do
   description 'Xymon Software Builds'
   baseurl "http://terabithia.org/rpms/xymon/el#{major_version}/"
@@ -28,4 +28,3 @@ service service_name do
   supports :restart => true, :reload => true, :status => true
   action [:enable, :start]
 end
-

@@ -13,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#if %w(ubuntu debian).inclue node['platform_family'] 
-case node['platform'] 
+case node['platform']
 when 'ubuntu'
-  include_recipe "xymon::ubuntu-client"
+  include_recipe 'xymon::ubuntu_client'
 when 'centos'
-  include_recipe "xymon::centos-client"
+  include_recipe 'xymon::centos_client'
 else
-  raise 'Unexpected platform'
+  fail 'Unexpected platform'
 end
-
