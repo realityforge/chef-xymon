@@ -11,6 +11,7 @@ Requirements
 Platform:
 
 * Ubuntu
+* Centos
 
 
 Attributes
