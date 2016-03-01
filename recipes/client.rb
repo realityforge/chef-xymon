@@ -13,38 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-raise 'Unexpected platform' unless node['platform'] == 'ubuntu' or node['platform'] == 'debian'
-
-package 'xymon-client' do
-  action :install
-end
-
-package 'hobbit-plugins' do
-    action :install
-end
-
-service 'hobbit-client' do
-  supports :restart => true, :reload => true, :status => true
-  action [:enable, :start]
-end
-
-cron "apt_update" do
-    action :create
-    minute '0'
-    hour '4'
-    user 'root'
-    command %w{
-    	apt-get update -qq > /var/lib/apt/update_output 2>&1 \ 
-	&& [ ! -s /var/lib/apt/update_output ] \
-	&& date -u > /var/lib/apt/update_success
-    }.join(' ')
-end
-
-template '/etc/default/hobbit-client' do
-  source 'hobbit-client.erb'
-  owner 'hobbit'
-  group 'hobbit'
-  mode '0644'
-  notifies :restart, 'service[hobbit-client]'
+case node['platform']
+when 'ubuntu'
+  include_recipe 'xymon::ubuntu_client'
+when 'centos'
+  include_recipe 'xymon::centos_client'
+else
+  fail 'Unexpected platform'
 end
