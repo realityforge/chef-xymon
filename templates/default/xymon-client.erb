@@ -15,13 +15,12 @@
 
 XYMONSERVERS="<%= node['xymon']['servers'].join(' ') %>"
 
-# The defaults usually suffice for the rest of this file, 
-# but you can tweak the hostname that the client reports 
-# data with, and the OS name used (typically needed only on 
+# The defaults usually suffice for the rest of this file,
+# but you can tweak the hostname that the client reports
+# data with, and the OS name used (typically needed only on
 # RHEL or RHAS servers).
 
 # CLIENTHOSTNAME=""
 # CLIENTOS="rhel3"
 
 CLIENTHOSTNAME="<%= node["hostname"] %>"
-
