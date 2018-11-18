@@ -1,7 +1,7 @@
 Description
 ===========
 
-[![Build Status](https://secure.travis-ci.org/realityforge/chef-xymon.png?branch=master)](http://travis-ci.org/realityforge/chef-xymon)
+[![Build Status](https://secure.travis-ci.org/realityforge/chef-xymon.svg?branch=master)](http://travis-ci.org/realityforge/chef-xymon)
 
 A cookbook that installs the xymon monitoring software.
 
